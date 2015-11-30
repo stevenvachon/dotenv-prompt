@@ -1,0 +1,34 @@
+{
+  "name": "dotenv-prompt",
+  "version": "0.1.0",
+  "description": "A nodejs module for creating .env file",
+  "main": "index.js",
+  "dependencies": {
+    "prompt": "^0.2.14"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mitica/dotenv-prompt.git"
+  },
+  "keywords": [
+    "dotenv",
+    "env",
+    "init",
+    "save",
+    "write",
+    "update",
+    "prompt"
+  ],
+  "author": "Dumitru Cantea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mitica/dotenv-prompt/issues"
+  },
+  "homepage": "https://github.com/Mitica/dotenv-prompt#readme"
+}
