@@ -5,7 +5,6 @@ const {mkdir, outputFile, readFile, remove} = require("fs-extra");
 const {PassThrough} = require("stream");
 const stringify = require("js-stringify");
 const suppose = require("suppose");
-const tempWrite = require("temp-write");
 
 
 
@@ -13,9 +12,7 @@ const dotenvPrompt = (envPath, envSamplePath, varnames) =>
 {
 	const contents = `
 		"use strict";
-		process.chdir(${stringify(process.cwd())});
-
-		const dotenvPrompt = require(${stringify(require.resolve("./"))});
+		const dotenvPrompt = require("../");
 
 		const envPath       = ${stringify(envPath)};
 		const envSamplePath = ${stringify(envSamplePath)};
@@ -29,18 +26,14 @@ const dotenvPrompt = (envPath, envSamplePath, varnames) =>
 		});
 	`;
 
-	return tempWrite(contents, "child.js")
-	.then(childPath =>
-	{
-		return readFile(childPath, "utf8")
-		.then(contents => console.log(contents))
-		.then(() => childPath);
-	});
+	return outputFile("temp/child.js", contents)
+	.then(() => readFile("temp/child.js", "utf8"))
+	.then(contents => console.log(contents));
 };
 
 
 
-const interaction = (childPath, expects=[]) =>
+const interaction = (expects=[]) =>
 {
 	return new Promise((resolve, reject) =>
 	{
@@ -50,7 +43,7 @@ const interaction = (childPath, expects=[]) =>
 		console.log(process.execPath)
 
 		// TODO :: https://github.com/jprichardson/node-suppose/issues/40
-		const supposing = suppose(process.execPath, [childPath], { debug:stream, stripAnsi:true });
+		const supposing = suppose(process.execPath, ["temp/child.js"], { debug:stream, stripAnsi:true });
 
 		//expects.forEach(expected => supposing.when(expected.condition).respond(expected.response));
 
@@ -85,7 +78,7 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 	it("prompts and writes an .env file with an empty and filled value (#1)", function()
 	{
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
-		.then(childPath => interaction(childPath,
+		.then(() => interaction(
 		[
 			{ condition:"? Value for VAR1 ()", response:EOL },
 			{ condition:"? Value for VAR2 ()", response:`value${EOL}` }
@@ -100,7 +93,7 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 	it("prompts and writes an .env file with an empty and filled value (#2)", function()
 	{
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
-		.then(childPath => interaction(childPath,
+		.then(() => interaction(
 		[
 			{ condition:"? Value for VAR1 ()", response:`value${EOL}` },
 			{ condition:"? Value for VAR2 ()", response:EOL }
@@ -115,7 +108,7 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 	it("prompts and writes an .env file with empty values", function()
 	{
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
-		.then(childPath => interaction(childPath,
+		.then(() => interaction(
 		[
 			{ condition:"? Value for VAR1 ()", response:EOL },
 			{ condition:"? Value for VAR2 ()", response:EOL }
@@ -130,7 +123,7 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 	it("prompts and writes an .env file with filled values", function()
 	{
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
-		.then(childPath => interaction(childPath,
+		.then(() => interaction(
 		[
 			{ condition:"? Value for VAR1 ()", response:`value1${EOL}` },
 			{ condition:"? Value for VAR2 ()", response:`value2${EOL}` }
@@ -147,7 +140,7 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 
 describe.only("dotenvPrompt", function()
 {
-	afterEach(() => Promise.all([ remove(".env"), remove(".env.sample") ]));
+	afterEach(() => Promise.all([ remove(".env"), remove(".env.sample"), remove("temp") ]));
 
 
 
@@ -185,7 +178,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with a different and default value (#1)", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:EOL },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -200,7 +193,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with a different and default value (#2)", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:EOL }
@@ -215,7 +208,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with default values", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`value2${EOL}` }
@@ -230,7 +223,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with different values", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -265,7 +258,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with a different and default value (#1)", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:EOL },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -280,7 +273,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with a different and default value (#2)", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:EOL }
@@ -295,7 +288,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with default values", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:EOL },
 					{ condition:"? Value for VAR2 (value2)", response:EOL }
@@ -310,7 +303,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with different values", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -328,12 +321,11 @@ describe.only("dotenvPrompt", function()
 		describe("and a custom .env file path", function()
 		{
 			beforeEach(() => outputFile("temp/.2env", `VAR1=value1${EOL}VAR2=value2${EOL}`));
-			afterEach(() => remove("temp"));
 
 			it("prompts and writes an .env file with different values", function()
 			{
 				return dotenvPrompt("temp/.2env", undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -351,12 +343,11 @@ describe.only("dotenvPrompt", function()
 		describe("and a custom .env.sample file path", function()
 		{
 			beforeEach(() => outputFile("temp/.2env.sample", `VAR1=value1${EOL}VAR2=value2${EOL}`));
-			afterEach(() => remove("temp"));
 
 			it("prompts and writes an .env file with different values", function()
 			{
 				return dotenvPrompt(undefined, "temp/.2env.sample", ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -378,7 +369,7 @@ describe.only("dotenvPrompt", function()
 			it("throws an error", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath))
+				.then(() => interaction())
 				.catch(error => error)
 				.then(error =>
 				{
@@ -401,7 +392,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts and writes an .env file with some different values", function()
 			{
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
@@ -424,7 +415,7 @@ describe.only("dotenvPrompt", function()
 			it("throws an error", function()
 			{
 				return dotenvPrompt()
-				.then(childPath => interaction(childPath))
+				.then(() => interaction())
 				.catch(error => error)
 				.then(error =>
 				{
@@ -444,7 +435,7 @@ describe.only("dotenvPrompt", function()
 			it("prompts all varnames and writes an .env file with different values", function()
 			{
 				return dotenvPrompt(undefined, undefined)
-				.then(childPath => interaction(childPath,
+				.then(() => interaction(
 				[
 					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
 					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }

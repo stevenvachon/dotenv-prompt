@@ -25,8 +25,7 @@
     "js-stringify": "^1.0.2",
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
-    "suppose": "stevenvachon/node-suppose",
-    "temp-write": "^3.3.0"
+    "suppose": "stevenvachon/node-suppose"
   },
   "engines": {
     "node": ">= 6"
