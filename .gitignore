@@ -1,9 +1,8 @@
-#
-#
-#
-
-.DS_Store
-.env*
-node_modules
-npm-debug.log
-*.tgz
+coverage/
+.env
+.env.sample
+es2015/
+node_modules/
+.nyc_output/
+package-lock.json
+temp/

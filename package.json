@@ -1,34 +1,54 @@
 {
   "name": "dotenv-prompt",
-  "version": "0.1.0",
-  "description": "A nodejs module for creating .env file",
-  "main": "index.js",
+  "description": "Create and update .env files via CLI prompts.",
+  "version": "0.2.0",
+  "license": "MIT",
+  "author": "Steven Vachon <contact@svachon.com> (https://www.svachon.com/)",
+  "repository": "stevenvachon/dotenv-prompt",
   "dependencies": {
-    "prompt": "^0.2.14"
+    "babel-core": "^6.25.0",
+    "babel-polyfill": "^6.23.0",
+    "dotenv": "^4.0.0",
+    "edit-dotenv": "^1.0.4",
+    "enquirer": "^1.0.2",
+    "fs-extra": "^4.0.0",
+    "isset": "^1.0.4",
+    "prompt-confirm": "^1.2.0",
+    "semver": "^5.3.0"
   },
   "devDependencies": {
-    "mocha": "^2.3.4"
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "chai": "^4.1.0",
+    "coveralls": "^2.13.1",
+    "escape-string-regexp": "^1.0.5",
+    "js-stringify": "^1.0.2",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.3",
+    "suppose": "stevenvachon/node-suppose",
+    "temp-write": "^3.3.0"
+  },
+  "engines": {
+    "node": ">= 6"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
+    "posttest": "nyc report --reporter=html",
+    "pretest": "babel es2017 --out-dir=es2015 --presets=es2017 --source-maps=true",
+    "test": "nyc --reporter=text-summary mocha test --timeout=5000 --check-leaks"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Mitica/dotenv-prompt.git"
-  },
+  "files": [
+    "es2015",
+    "es2017",
+    "index.js"
+  ],
   "keywords": [
+    "boilerplate",
+    "bootstrapper",
     "dotenv",
     "env",
+    ".env",
     "init",
-    "save",
-    "write",
-    "update",
     "prompt"
-  ],
-  "author": "Dumitru Cantea",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Mitica/dotenv-prompt/issues"
-  },
-  "homepage": "https://github.com/Mitica/dotenv-prompt#readme"
+  ]
 }
