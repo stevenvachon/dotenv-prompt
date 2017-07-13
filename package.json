@@ -35,7 +35,7 @@
     "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
     "posttest": "nyc report --reporter=html",
     "pretest": "babel es2017 --out-dir=es2015 --presets=es2017 --source-maps=true",
-    "test": "node windows.js"
+    "test": "nyc --reporter=text-summary mocha test --timeout=5000 --check-leaks --bail"
   },
   "files": [
     "es2015",

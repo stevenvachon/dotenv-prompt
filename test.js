@@ -30,12 +30,12 @@ const dotenvPrompt = (envPath, envSamplePath, varnames) =>
 	`;
 
 	return tempWrite(contents, "child.js")
-	/*.then(childPath =>
+	.then(childPath =>
 	{
 		return readFile(childPath, "utf8")
 		.then(contents => console.log(contents))
 		.then(() => childPath);
-	})*/;
+	});
 };
 
 
@@ -45,12 +45,20 @@ const interaction = (childPath, expects=[]) =>
 	return new Promise((resolve, reject) =>
 	{
 		const stream = new PassThrough()
-		//.on("data", chunk => console.log(chunk.toString()));
+		.on("data", chunk => console.log(chunk.toString()));
+
+		console.log(process.execPath)
 
 		// TODO :: https://github.com/jprichardson/node-suppose/issues/40
 		const supposing = suppose(process.execPath, [childPath], { debug:stream, stripAnsi:true });
 
-		expects.forEach(expected => supposing.when(clean(expected.condition)).respond(expected.response));
+		//expects.forEach(expected => supposing.when(expected.condition).respond(expected.response));
+
+		expects.forEach(expected => supposing.when(expected.condition).respond(() =>
+		{
+			setImmediate(() => console.error(stringify(expected.response)));
+			return expected.response;
+		}));
 
 		supposing
 		//.once("error", error => reject(error))
