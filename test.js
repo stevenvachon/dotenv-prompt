@@ -87,8 +87,8 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
 		.then(childPath => interaction(childPath,
 		[
-			{ condition:"? Value for VAR1 ()", response:"\n" },
-			{ condition:"? Value for VAR2 ()", response:"value\n" }
+			{ condition:"? Value for VAR1 ()", response:EOL },
+			{ condition:"? Value for VAR2 ()", response:`value${EOL}` }
 		]))
 		.then(() => readFile(envPath || ".env", "utf8"))
 		.then(contents =>
@@ -102,8 +102,8 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
 		.then(childPath => interaction(childPath,
 		[
-			{ condition:"? Value for VAR1 ()", response:"value\n" },
-			{ condition:"? Value for VAR2 ()", response:"\n" }
+			{ condition:"? Value for VAR1 ()", response:`value${EOL}` },
+			{ condition:"? Value for VAR2 ()", response:EOL }
 		]))
 		.then(() => readFile(envPath || ".env", "utf8"))
 		.then(contents =>
@@ -117,8 +117,8 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
 		.then(childPath => interaction(childPath,
 		[
-			{ condition:"? Value for VAR1 ()", response:"\n" },
-			{ condition:"? Value for VAR2 ()", response:"\n" }
+			{ condition:"? Value for VAR1 ()", response:EOL },
+			{ condition:"? Value for VAR2 ()", response:EOL }
 		]))
 		.then(() => readFile(envPath || ".env", "utf8"))
 		.then(contents =>
@@ -132,8 +132,8 @@ const promptsAndWritesWithEmptyDefaults = (envPath, envSamplePath) =>
 		return dotenvPrompt(envPath, envSamplePath, ["VAR1","VAR2"])
 		.then(childPath => interaction(childPath,
 		[
-			{ condition:"? Value for VAR1 ()", response:"value1\n" },
-			{ condition:"? Value for VAR2 ()", response:"value2\n" }
+			{ condition:"? Value for VAR1 ()", response:`value1${EOL}` },
+			{ condition:"? Value for VAR2 ()", response:`value2${EOL}` }
 		]))
 		.then(() => readFile(envPath || ".env", "utf8"))
 		.then(contents =>
@@ -187,8 +187,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:EOL },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -202,8 +202,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:EOL }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -217,8 +217,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -232,8 +232,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -267,8 +267,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:EOL },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -282,8 +282,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:EOL }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -297,8 +297,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"\n" }
+					{ condition:"? Value for VAR1 (value1)", response:EOL },
+					{ condition:"? Value for VAR2 (value2)", response:EOL }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -312,8 +312,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -335,8 +335,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt("temp/.2env", undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile("temp/.2env", "utf8"))
 				.then(contents =>
@@ -358,8 +358,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, "temp/.2env.sample", ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -403,8 +403,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined, ["VAR1","VAR2"])
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
@@ -446,8 +446,8 @@ describe.only("dotenvPrompt", function()
 				return dotenvPrompt(undefined, undefined)
 				.then(childPath => interaction(childPath,
 				[
-					{ condition:"? Value for VAR1 (value1)", response:"new value1\n" },
-					{ condition:"? Value for VAR2 (value2)", response:"new value2\n" }
+					{ condition:"? Value for VAR1 (value1)", response:`new value1${EOL}` },
+					{ condition:"? Value for VAR2 (value2)", response:`new value2${EOL}` }
 				]))
 				.then(() => readFile(".env", "utf8"))
 				.then(contents =>
