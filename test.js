@@ -8,29 +8,6 @@ const suppose = require("suppose");
 
 
 
-it.only("pty?", function(done)
-{
-	const {spawn} = require("node-pty");
-
-	const callback = (...args) =>
-	{
-		console.log(...args);
-		done();
-	};
-
-	dotenvPrompt()
-	.then(() =>
-	{
-		const exe = spawn(process.execPath, ["child.js"], {});
-
-		exe.once("finish", (...args) => callback("finish", ...args));
-		exe.once("error", (...args) => callback("error", ...args));
-		exe.once("exit", (...args) => callback("exit", ...args));
-	});
-});
-
-
-
 const dotenvPrompt = (envPath, envSamplePath, varnames) =>
 {
 	const contents = `
