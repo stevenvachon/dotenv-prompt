@@ -7,7 +7,7 @@
   "repository": "stevenvachon/dotenv-prompt",
   "dependencies": {
     "babel-core": "^6.25.0",
-    "babel-polyfill": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "dotenv": "^4.0.0",
     "edit-dotenv": "^1.0.4",
     "enquirer": "^1.0.2",
