@@ -11,7 +11,7 @@
     "dotenv": "^4.0.0",
     "edit-dotenv": "^1.0.4",
     "enquirer": "^1.0.2",
-    "fs-extra": "^4.0.0",
+    "fs-extra": "^7.0.0",
     "isset": "^1.0.4",
     "prompt-confirm": "^1.2.0",
     "semver": "^5.3.0"
