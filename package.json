@@ -10,7 +10,7 @@
     "babel-polyfill": "^6.23.0",
     "dotenv": "^4.0.0",
     "edit-dotenv": "^1.0.4",
-    "enquirer": "^1.0.2",
+    "enquirer": "^2.0.6",
     "fs-extra": "^4.0.0",
     "isset": "^1.0.4",
     "prompt-confirm": "^1.2.0",
